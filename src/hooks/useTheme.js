@@ -5,7 +5,6 @@ function useTheme(defaultValue = 'light'){
     const [theme, setTheme] = useState(defaultValue);
 
     const validateTheme = (themeValue = 'light') => {
-        console.log('working')
         setTheme(themeValue);
     } 
 
