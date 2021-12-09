@@ -49,10 +49,52 @@ function useRequestDelay(delayTime = 1000, initialData = []) {
     delayFunction();
   }
 
+  function insertRecord(newRecord, doneCallback) {
+    const newRecords = [...data, newRecord]
+    async function delayFunction() {
+      try {
+        setData(newRecords);
+        await delay(delayTime);
+        if (doneCallback) {
+          doneCallback();
+        }
+      } catch (error) {
+        console.log("error thrown inside delayFunction", error);
+        if (doneCallback) {
+          doneCallback();
+        }
+        setData(originalRecords);
+      }
+    }
+    delayFunction();
+  }
+
+  function deleteRecord(record, doneCallback) {
+    const newRecords = data.filter((el => el.id !== record.id));
+    async function delayFunction() {
+      try {
+        setData(newRecords);
+        await delay(delayTime);
+        if (doneCallback) {
+          doneCallback();
+        }
+      } catch (error) {
+        console.log("error thrown inside delayFunction", error);
+        if (doneCallback) {
+          doneCallback();
+        }
+        setData(originalRecords);
+      }
+    }
+    delayFunction();
+  }
+
   return {
     data,
     requestStatus,
     error,
+    insertRecord,
+    deleteRecord,
     updateRecord,
   };
 }
